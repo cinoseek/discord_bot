@@ -25,7 +25,7 @@ function make_alias_list() {
         // Get all of the rows from the spreadsheet.
         doc.getRows(1,{
             offset: 1,
-            limit: 100,
+            limit: 1000,
         }, function (err, rows) {
             console.log('Read '+rows.length+' rows');
             for ( i in rows ) {
