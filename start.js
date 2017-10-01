@@ -79,6 +79,13 @@ client.on('message', message => {
             return;
         }
 
+        if (msg.startsWith(prefix + '선택')) {
+            items = (msg.replace(msg.split(' ')[0],'').trim()).split(' ');
+            message.channel.sendMessage(message.author.username + ' 선택: ' + items[math.floor(math.random() * items.length)]);
+            return;
+        }
+
+        // print google sheet items
         if (alias_list[msg]) {
             message.channel.sendMessage(alias_list[msg]);
         }
