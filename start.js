@@ -10,6 +10,7 @@ const math = require('mathjs');
 // Create a document object using the ID of the spreadsheet - obtained from its URL.
 var doc = new GoogleSpreadsheet(settings.alias_sheet_id);
 var alias_list = [];
+var lucky_list = [];
 var prefix = '!'
 
 function make_alias_list() {
@@ -19,6 +20,7 @@ function make_alias_list() {
         B1 : resp
     */
     alias_list = [];
+    lucky_list = [];
 
     // Authenticate with the Google Spreadsheets API.
     doc.useServiceAccountAuth(creds, function (err) {
@@ -27,11 +29,21 @@ function make_alias_list() {
             offset: 1,
             limit: 1000,
         }, function (err, rows) {
-            console.log('Read '+rows.length+' rows');
+            console.log('Read alias '+rows.length+' rows');
             for ( i in rows ) {
                 alias_list[prefix + rows[i].alias] = rows[i].resp;
             }
-            console.log(alias_list);
+            // console.log(alias_list);
+        });
+        doc.getRows(2,{
+            offset: 1,
+            limit: 1000,
+        }, function (err, rows) {
+            console.log('Read lucky '+rows.length+' rows');
+            for ( i in rows ) {
+                lucky_list.push(rows[i].lucky);
+            }
+            // console.log(alias_list);
         });
     });
 }
@@ -107,6 +119,13 @@ client.on('message', message => {
                 setTimeout(timer_msg, time*1000, message, message.author.toString(), time, msg);
             }
             return;
+        }
+
+        // lucky random print
+        if (msg.startsWith(prefix + '운세')) {
+            retmsg = lucky_list[math.floor(math.random() * lucky_list.length)]
+            if (0 != retmsg.length)
+                message.channel.sendMessage(retmsg);
         }
 
         // print google sheet items
