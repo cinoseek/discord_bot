@@ -123,7 +123,9 @@ client.on('message', message => {
 
         // lucky random print
         if (msg.startsWith(prefix + '운세')) {
-            retmsg = lucky_list[math.floor(math.random() * lucky_list.length)]
+            pick = math.floor(math.random() * lucky_list.length);
+            retmsg = lucky_list[pick]
+            console.log('lucky num: '+pick+'/'+lucky_list.length);
             if (0 != retmsg.length)
                 message.channel.sendMessage(retmsg);
         }
