@@ -86,7 +86,7 @@ function timer_type_wait(message) {
     typeon = false;
     function type_sort(callback) {
         type_array.sort(function(a, b) {
-            return a[1] - b[1];
+            return b[1] - a[1];
         });
         callback();
     }
@@ -182,10 +182,10 @@ client.on('message', message => {
             typemsg = type_list[pick1] + ' ' + type_list[pick2];
             tnum = Number(type_num[pick1]) + Number(type_num[pick2]) + 1;
             message.channel.sendMessage("5초후 제시문을 타이핑하세요.");
-            type_arry = [];
+            type_array = [];
             console.log('type msg: ' + typemsg);
             setTimeout(timer_type_start, 5*1000, message);
-            setTimeout(timer_type_wait, 20*1000, message);
+            setTimeout(timer_type_wait, 30*1000, message);
         }
         if (msg.startsWith(typemsg)) {
             type_etime = Date.now();
