@@ -112,7 +112,15 @@ String.prototype.kortypecount = function() {
 // Type timer
 function timer_type_start(message) {
     typeon = true;
-    message.channel.sendMessage('제시문: '+ typemsg);
+    // 출력변조
+    falsifymsg = ' ';
+    for (i=0;i<typemsg.length;i++) {
+        if (' ' == typemsg[i])
+            falsifymsg = falsifymsg+'  ';
+        else
+            falsifymsg = falsifymsg+typemsg[i];
+    }
+    message.channel.sendMessage('제시문: '+ falsifymsg);
     type_stime = Date.now();
 }
 function timer_type_wait(message) {
