@@ -12,7 +12,6 @@ var doc = new GoogleSpreadsheet(settings.alias_sheet_id);
 var alias_list = [];
 var lucky_list = [];
 var type_list  = [];
-var type_num   = [];
 var prefix = '!';
 
 // Type practice
@@ -21,7 +20,7 @@ var typeon = false;
 var type_stime;
 var type_etime;
 var typemsg;
-var tnum;
+var typenum;
 
 function make_alias_list() {
     /*
@@ -32,7 +31,6 @@ function make_alias_list() {
     alias_list = [];
     lucky_list = [];
     type_list  = [];
-    type_num   = [];
 
     // Authenticate with the Google Spreadsheets API.
     doc.useServiceAccountAuth(creds, function (err) {
@@ -64,7 +62,6 @@ function make_alias_list() {
             console.log('Read type '+rows.length+' rows');
             for ( i in rows ) {
                 type_list.push(rows[i].type);
-                type_num.push(rows[i].num);
             }
             // console.log(alias_list);
         });
@@ -75,6 +72,42 @@ make_alias_list();
 // Timer func
 function timer_msg(message, caller , time, msg) {
     message.channel.sendMessage(caller + ' ' + time + '초 타이머 종료: ' + msg);
+}
+// Type count
+// ex) 'string'.kortypecount()
+String.prototype.kortypecount = function() {
+    var str = this;
+    var sum = 0;
+    var code = 0;
+
+    // 타이핑 값
+    //  초성   [ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ]
+    var inum = [1,2,1,1,2,1,1,1,2,1,2,1,1,2,1,1,1,1,1 ]
+    //  중성   [ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ]
+    var mnum = [1,1,1,2,1,1,1,2,1,2,2,2,1,1,2,2,2,1,1,2,1 ];
+    //  종성   [  ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ]
+    var tnum = [0,1,2,2,1,2,2,1,1,2,2,2,2,2,2,2,1,1,2,1,2,1,1,1,1,1,1,1 ];
+    var isound, msound, tsound;
+
+    var cnt = str.length;
+    for (var i = 0; i < cnt; i++) {
+        code = str.charCodeAt(i);
+        // 한글이 아닌 경우
+        if (code < 0xAC00 || code > 0xD7A3) {
+            sum += 1;
+            continue;
+        }
+
+        code = str.charCodeAt(i) - 0xAC00;
+        tsound = code % 28; // 종성
+        msound = ((code - tsound) / 28 ) % 21 // 중성
+        isound = (((code - tsound) / 28 ) - msound ) / 21 //초성
+
+        sum += inum[isound];
+        sum += mnum[msound];
+        sum += tnum[tsound];
+    }
+    return sum;
 }
 // Type timer
 function timer_type_start(message) {
@@ -180,19 +213,18 @@ client.on('message', message => {
             pick1 = math.floor(math.random() * type_list.length);
             pick2 = math.floor(math.random() * type_list.length);
             typemsg = type_list[pick1] + ' ' + type_list[pick2];
-            tnum = Number(type_num[pick1]) + Number(type_num[pick2]) + 1;
+            typenum = typemsg.kortypecount();
+
             message.channel.sendMessage("5초후 제시문을 타이핑하세요.");
             type_array = [];
-            console.log('type msg: ' + typemsg);
+            console.log('type msg: ' + typemsg + ' count:' + typenum);
             setTimeout(timer_type_start, 5*1000, message);
             setTimeout(timer_type_wait, 30*1000, message);
         }
         if (msg.startsWith(typemsg)) {
             type_etime = Date.now();
             interval = (type_etime - type_stime)/1000.0;
-            console.log('interval:' + interval);
-            speed = Number((tnum*60.0/interval).toFixed(1));
-            console.log('speed:' + speed);
+            speed = Number((typenum*60.0/interval).toFixed(1));
             type_array.push([message.author.toString(), speed]);
         }
 
