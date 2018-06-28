@@ -218,9 +218,8 @@ client.on('message', message => {
 
         // type test
         if (!typeon && msg.startsWith(prefix + '타자연습')) {
-            pick1 = math.floor(math.random() * type_list.length);
-            pick2 = math.floor(math.random() * type_list.length);
-            typemsg = type_list[pick1] + ' ' + type_list[pick2];
+            pick = math.floor(math.random() * type_list.length);
+            typemsg = type_list[pick];
             typenum = typemsg.kortypecount();
 
             message.channel.sendMessage("5초후 제시문을 타이핑하세요.");
