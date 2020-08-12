@@ -2,4 +2,3 @@ node_modules/
 jspm_packages/
 google_api_auth.json
 settings.json
-package-lock.json
