@@ -6,6 +6,7 @@ const doc = new GoogleSpreadsheet(settings.alias_sheet_id);
 
 var alias_list = [];
 var type_list  = [];
+var stock_list = [];
 
 exports.make_alias_list = function() {
     /*
@@ -15,6 +16,7 @@ exports.make_alias_list = function() {
     */
     alias_list = [];
     type_list  = [];
+    stock_list = [];
 
     // Authenticate with the Google Spreadsheets API.
     doc.useServiceAccountAuth(creds, function (err) {
@@ -27,7 +29,7 @@ exports.make_alias_list = function() {
             for ( i in rows ) {
                 alias_list[rows[i].alias] = rows[i].resp;
             }
-            console.log(alias_list);
+            //console.log(alias_list);
         });
         doc.getRows(2,{
             offset: 1,
@@ -37,7 +39,17 @@ exports.make_alias_list = function() {
             for ( i in rows ) {
                 type_list.push(rows[i].type);
             }
-            console.log(type_list);
+            //console.log(type_list);
+        });
+        doc.getRows(3,{
+            offset: 1,
+            limit: 3000,
+        }, function (err, rows) {
+            console.log('Read type '+rows.length+' rows');
+            for ( i in rows ) {
+                stock_list.push([rows[i].name, rows[i].code]);
+            }
+            //console.log(stock_list);
         });
     });
 }
@@ -48,6 +60,10 @@ exports.get_alias_list = function() {
 
 exports.get_type_list = function() {
     return type_list;
+}
+
+exports.get_stock_list = function() {
+    return stock_list;
 }
 // First Loading
 //make_alias_list();

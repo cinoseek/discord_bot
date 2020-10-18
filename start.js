@@ -4,10 +4,12 @@ const client = new Discord.Client();
 
 const reload = require('./commands/reload.js');
 const type = require('./commands/type.js');
+const stock = require('./commands/stock.js');
 
 var prefix = '!';
 var alias_list = [];
 var type_list = [];
+var stock_list = [];
 var type_msg = "";
 var typeon = false;
 
@@ -15,6 +17,8 @@ client.on('ready',() => {
     console.log('Online');
     reload.make_alias_list();
     alias_list = reload.get_alias_list();
+    type_list = reload.get_type_list();
+    stock_list = reload.get_stock_list();
 });
 
 client.on('message', message => {
@@ -30,10 +34,12 @@ client.on('message', message => {
             return;
         }
 
-        switch(msg) {
+        switch(msg.split(' ')[0]) {
             case "!reload": {
                 reload.make_alias_list();
                 alias_list = reload.get_alias_list();
+                type_list = reload.get_type_list();
+                stock_list = reload.get_stock_list();
                 message.channel.sendMessage('Reload List. Plz Wait...');
             } break;
             case "!도움": {
@@ -45,8 +51,12 @@ client.on('message', message => {
                 console.log(alias_list);
             } break;
 
+            case "!주식": {
+                stock.now_price(message, stock_list, msg.split(' ')[1]);
+            } break;
+
             case "!타자연습": {
-                type_msg = type.get_typemsg(reload.get_type_list());
+                type_msg = type.get_typemsg(type_list);
                 type.start_type(message);
             } break;
             
