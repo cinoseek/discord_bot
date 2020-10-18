@@ -27,7 +27,7 @@ var get_price = function(code, callback) {
 
 exports.now_price = function(message, stock_list, name, callback) {
     var code_list = stock_list.filter(function(value,index) {return value[0].indexOf(name) >= 0;});
-    console.log(code_list);
+    code_list = code_list.slice(0,10);
     var all = ""
     var count = 0;
     code_list.forEach(function(element, index, array){
