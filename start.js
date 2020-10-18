@@ -52,7 +52,8 @@ client.on('message', message => {
             } break;
 
             case "!주식": {
-                stock.now_price(message, stock_list, msg.split(' ')[1]);
+                if (msg.split(' ')[1])
+                    stock.now_price(message, stock_list, msg.split(' ')[1]);
             } break;
 
             case "!타자연습": {
