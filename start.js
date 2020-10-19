@@ -52,8 +52,18 @@ client.on('message', message => {
             } break;
 
             case "!주식": {
-                if (msg.split(' ')[1])
-                    stock.now_price(message, stock_list, msg.split(' ')[1]);
+                if (msg.split(' ')[1]) {
+                    var stocks = msg.split(' ');
+                    stocks.splice(0,1);
+                    console.log(stocks);
+                    stock.now_price(message, stock_list, stocks);
+                }
+            } break;
+
+            case "!종목": {
+                if (msg.split(' ')[1]) {
+                    stock.find_stock(message, stock_list, msg.split(' ')[1]);
+                }
             } break;
 
             case "!타자연습": {
