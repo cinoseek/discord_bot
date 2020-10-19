@@ -14,7 +14,8 @@ var get_price = function(code, callback) {
             arr[index] = $(this).text();
         });
         let temp = arr[3].split(' ');
-        ret = arr[1].split(' ')[1] + " " + temp[1] + " (" + temp[3] + " " + temp[4] + " / " + temp[5] + temp[6] + "%)";
+        ret = arr[1] + " : " + temp[1] + " (" + temp[3] + " " + temp[4] + " / " + temp[5] + temp[6] + "%)";
+        ret = ret.replace("종목명 ", "");
         ret = ret.replace("상승", "▲");
         ret = ret.replace("보합", "━");
         ret = ret.replace("하락", "▼");
