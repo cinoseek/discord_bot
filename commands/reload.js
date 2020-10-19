@@ -47,7 +47,7 @@ exports.make_alias_list = function() {
         }, function (err, rows) {
             console.log('Read type '+rows.length+' rows');
             for ( i in rows ) {
-                stock_list.push([rows[i].name, rows[i].code]);
+                stock_list.push([rows[i].name.replace(" ", ""), rows[i].code]);
             }
             //console.log(stock_list);
         });
