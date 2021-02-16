@@ -29,7 +29,7 @@ var get_price = function(code, callback) {
 exports.now_price = function(message, stock_list, stocks, callback) {
     var code_list = [];
     stocks.forEach(function(element, index, array){
-        var code = stock_list.filter(function(value,index) {return value[0] === element.toUpperCase();});
+        var code = stock_list.filter(function(value,index) {return value[0].toUpperCase() === element.toUpperCase();});
         if (code.length)
             code_list.push(code[0][1]);
     });
