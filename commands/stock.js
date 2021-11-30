@@ -54,7 +54,7 @@ exports.find_stock = function(message, stock_list, name, callback) {
     code_list = stock_list.filter(function(value,index) {return value[0].indexOf(name.toUpperCase()) >= 0;});
 
     code_list.forEach(function(element, index, array){
-        all = all + " " + element[0];
+        all = all + "," + element[0];
     });
     message.reply(all);
 }
