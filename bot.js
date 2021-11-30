@@ -1,83 +1,68 @@
-const Discord = require('discord.js');
-const settings = require('./settings.json');
-const client = new Discord.Client();
+//const Discord = require('discord.js');
+//const settings = require('./settings.json');
+//const client = new Discord.Client();
+const { Client, Intents } = require('discord.js');
+const { token } = require('./settings.json');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const reload = require('./commands/reload.js');
-const type = require('./commands/type.js');
 const stock = require('./commands/stock.js');
 
-var prefix = '!';
-var alias_list = [];
-var type_list = [];
 var stock_list = [];
-var type_msg = "";
-var typeon = false;
+
 
 client.on('ready',() => {
     console.log('Online');
-    reload.make_alias_list();
-    alias_list = reload.get_alias_list();
-    type_list = reload.get_type_list();
+    reload.make_stock_list();
     stock_list = reload.get_stock_list();
 });
+/*
+client.on("messageCreate", message  => {
+    console.log(message.content);
+    if (message.content === "ping") {
+        message.reply("Pong!")
+    }
+  })
+*/
 
-client.on('message', message => {
+client.on("messageCreate", message  => {
     try {
-        // run only prefix msg
         var msg = message.content;
-        if (!type.on && !msg.startsWith(prefix)) return;
+        if (message.author.bot) return false;
+        if (!msg.startsWith("!")) return;
 
         // test ping
-        if (msg.startsWith(prefix + 'ping')) {
-            console.log(message.author.username + " : " + message.content);
-            message.channel.sendMessage('pong');
+        if (msg.startsWith('!ping')) {
+            message.reply("Pong!");
+            message.channel.send("Pong!!");
             return;
         }
 
         switch(msg.split(' ')[0]) {
-            case "!reload": {
-                reload.make_alias_list();
-                alias_list = reload.get_alias_list();
-                type_list = reload.get_type_list();
-                stock_list = reload.get_stock_list();
-                message.channel.sendMessage('Reload List. Plz Wait...');
-            } break;
             case "!도움": {
-                all = '명령어 목록: ';
-                for ( i in alias_list) {
-                    all = all + i + ' ';
-                }
-                message.channel.sendMessage(all);
-                console.log(alias_list);
+                cmdlist = '명령어 목록:\n!주식 CJ, CJ CGV \n!종목찾기 LG';
+                message.channel.send(cmdlist);
             } break;
 
             case "!주식": {
                 if (msg.split(' ')[1]) {
-                    var stocks = msg.split(' ');
-                    stocks.splice(0,1);
+                    var stockstr = msg.replace('!주식','');
+                    var stocks = stockstr.split(',');
+                    stocks.forEach(function(name, index) {
+                        stocks[index] = name.trim();
+                    });
                     console.log(stocks);
                     stock.now_price(message, stock_list, stocks);
                 }
             } break;
 
-            case "!종목": {
+            case "!종목찾기": {
                 if (msg.split(' ')[1]) {
                     stock.find_stock(message, stock_list, msg.split(' ')[1]);
                 }
             } break;
 
-            case "!타자연습": {
-                type_msg = type.get_typemsg(type_list);
-                type.start_type(message);
-            } break;
-            
             default: {
-                if (alias_list[msg]) {
-                    message.channel.sendMessage(alias_list[msg]);
-                }
-                if (msg.startsWith(type_msg)) {
-                    type.match_type(message);
-                }
             } break;
         }
         return;
@@ -88,4 +73,4 @@ client.on('message', message => {
     }
 });
 
-client.login(settings.discord_token);
+client.login(token);

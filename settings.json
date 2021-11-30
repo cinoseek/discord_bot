@@ -1,4 +1,3 @@
 {
-    "discord_token":"<BOT_TOKEN>",
-    "alias_sheet_id":"<GOOGLE_SPREADSHEET_ID>"
+    "discord_token":"<BOT_TOKEN>"
 }
