@@ -34,14 +34,21 @@ exports.now_price = function(message, stock_list, stocks, callback) {
             code_list.push(code[0][1]);
     });
     console.log(code_list);
+    var code_ret = [];
+    code_list.forEach(function(element, index) {
+        code_ret[index] = [element, ''];
+    });
+    console.log(code_ret);
     var all = "";
     var count = 0;
     code_list.forEach(function(element, index, array){
         get_price(element, function(ret){
-            ret = "> " + ret;
-            all =  all + ret + "\n";
+            code_ret[index][1] = "> " + ret + "\n";
             count++;
             if (count == array.length) {
+                code_ret.forEach(function(element, index) {
+                    all =  all + code_ret[index][1];
+                });
                 message.reply(all);
             }
         });
