@@ -22,6 +22,9 @@ var get_price = function(code, callback) {
         ret = ret.replace("플러스", "+");
         ret = ret.replace("마이너스", "-");
         console.log("get_price: " + ret);
+        if (-1 != ret.search("▲")) ret = "+ " + ret;
+        if (-1 != ret.search("▼")) ret = "- " + ret;
+        if (-1 != ret.search("━")) ret = "= " + ret;
         callback(ret);
     });
 }
@@ -39,16 +42,17 @@ exports.now_price = function(message, stock_list, stocks, callback) {
         code_ret[index] = [element, ''];
     });
     console.log(code_ret);
-    var all = "";
+    var all = "```diff";
     var count = 0;
     code_list.forEach(function(element, index, array){
         get_price(element, function(ret){
-            code_ret[index][1] = "> " + ret + "\n";
+            code_ret[index][1] = ret + "\n";
             count++;
             if (count == array.length) {
                 code_ret.forEach(function(element, index) {
                     all =  all + code_ret[index][1];
                 });
+                all = all + "```"
                 message.reply(all);
             }
         });
