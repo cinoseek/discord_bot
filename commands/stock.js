@@ -42,7 +42,7 @@ exports.now_price = function(message, stock_list, stocks, callback) {
         code_ret[index] = [element, ''];
     });
     console.log(code_ret);
-    var all = "```diff";
+    var all = "```diff\n";
     var count = 0;
     code_list.forEach(function(element, index, array){
         get_price(element, function(ret){
