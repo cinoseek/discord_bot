@@ -1,9 +1,16 @@
 //const Discord = require('discord.js');
 //const settings = require('./settings.json');
 //const client = new Discord.Client();
-const { Client, Intents } = require('discord.js');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./settings.json');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
++const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
+    partials: [Partials.Channel],
+});
 
 const reload = require('./commands/reload.js');
 const stock = require('./commands/stock.js');

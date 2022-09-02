@@ -53,7 +53,7 @@ exports.now_price = function(message, stock_list, stocks, callback) {
                     all =  all + code_ret[index][1];
                 });
                 all = all + "```"
-                message.reply(all);
+                message.channel.send(all);
             }
         });
     });
@@ -67,5 +67,5 @@ exports.find_stock = function(message, stock_list, name, callback) {
     code_list.forEach(function(element, index, array){
         all = all + "," + element[0];
     });
-    message.reply(all);
+    message.channel.send(all);
 }
