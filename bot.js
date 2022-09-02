@@ -3,7 +3,7 @@
 //const client = new Discord.Client();
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./settings.json');
-+const client = new Client({
+const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
