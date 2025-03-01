@@ -13,7 +13,7 @@ var get_price = function(code, callback) {
         $('div.new_totalinfo > dl.blind > dd').each(function (index, ele) {
             arr[index] = $(this).text();
         });
-        let temp = arr[3].split(' ');
+        let temp = arr[3].trim().split(/\s+/);
         ret = arr[1] + " : " + temp[1] + " (" + temp[3] + " " + temp[4] + " / " + temp[5] + temp[6] + "%)";
         ret = ret.replace("종목명 ", "");
         ret = ret.replace("상승", "▲");
