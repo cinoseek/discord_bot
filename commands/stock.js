@@ -8,7 +8,7 @@ var get_price = function(code, callback) {
     let url_base = "https://finance.naver.com/item/main.nhn?code=";
     let url_full = url_base + code;
     request.get({ url: url_full, encoding: null }, function (err, response, body) {
-        let $ = cheerio.load(iconv.decode(body, "EUC-KR").toString());
+        let $ = cheerio.load(iconv.decode(body, "UTF-8").toString());
         let arr = [];
         $('div.new_totalinfo > dl.blind > dd').each(function (index, ele) {
             arr[index] = $(this).text();
@@ -21,6 +21,7 @@ var get_price = function(code, callback) {
         ret = ret.replace("하락", "▼");
         ret = ret.replace("플러스", "+");
         ret = ret.replace("마이너스", "-");
+        ret = ret.replace("퍼센트", "");
         console.log("get_price: " + ret);
         if (-1 != ret.search("▲")) ret = "+ " + ret;
         if (-1 != ret.search("▼")) ret = "- " + ret;
