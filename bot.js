@@ -14,6 +14,7 @@ const client = new Client({
 
 const reload = require('./commands/reload.js');
 const stock = require('./commands/stock.js');
+const stock_us = require('./commands/stock_us.js');
 
 var stock_list = [];
 
@@ -60,6 +61,18 @@ client.on("messageCreate", message  => {
                     });
                     console.log(stocks);
                     stock.now_price(message, stock_list, stocks);
+                }
+            } break;
+
+            case "!미주": {
+                if (msg.split(' ')[1]) {
+                    var stockstr = msg.replace('!미주','');
+                    var stocks = stockstr.split(',');
+                    stocks.forEach(function(name, index) {
+                        stocks[index] = name.trim();
+                    });
+                    console.log(stocks);
+                    stock_us.now_price(message, stocks);
                 }
             } break;
 
