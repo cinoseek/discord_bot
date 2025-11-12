@@ -7,6 +7,7 @@
   "license": "Unlicense",
   "dependencies": {
     "async": "^2.6.4",
+    "axios": "^1.13.2",
     "cheerio": "^1.0.0-rc.12",
     "discord.js": "^14.3.0",
     "fast-csv": "^4.3.6",
