@@ -72,7 +72,7 @@ client.on("messageCreate", message  => {
                         stocks[index] = name.trim();
                     });
                     console.log(stocks);
-                    stock_us.now_price(message, stocks);
+                    stock_us.now_price_us(message, stocks);
                 }
             } break;
 
